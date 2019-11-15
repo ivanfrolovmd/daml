@@ -6,7 +6,7 @@ package com.digitalasset.platform.sandbox.stores.ledger.sql.dao
 import akka.NotUsed
 import akka.stream.Materializer
 import akka.stream.scaladsl.Source
-import com.daml.ledger.participant.state.v1.TransactionId
+import com.daml.ledger.participant.state.v1.{ParticipantId, TransactionId}
 import com.digitalasset.daml.lf.data.Ref.{LedgerString, PackageId, Party}
 import com.daml.ledger.participant.state.index.v2.PackageDetails
 import com.digitalasset.daml.lf.transaction.Node
@@ -16,7 +16,7 @@ import com.digitalasset.ledger.api.domain.{LedgerId, PartyDetails}
 import com.digitalasset.platform.participant.util.EventFilter.TemplateAwareFilter
 import com.digitalasset.platform.sandbox.metrics.MetricsManager
 import com.digitalasset.platform.sandbox.stores.ActiveLedgerState.{ActiveContract, Contract}
-import com.digitalasset.platform.sandbox.stores.ledger.LedgerEntry
+import com.digitalasset.platform.sandbox.stores.ledger.{LedgerEntry, PackageUploadEntry}
 
 import scala.collection.immutable
 import scala.concurrent.Future
@@ -122,6 +122,34 @@ private class MeteredLedgerDao(ledgerDao: LedgerDao, mm: MetricsManager)
   override def close(): Unit = {
     ledgerDao.close()
   }
+
+  /**
+    * Store a package upload entry confirmation or rejection
+    *
+    * @param participantId
+    * @param submissionId
+    * @param reason
+    * @return
+    */
+  override def storePackageUploadEntry(
+      participantId: ParticipantId,
+      submissionId: String,
+      reason: Option[String]): Future[PersistenceResponse] =
+    //TODO BH: implement me
+    Future.successful(PersistenceResponse.Duplicate)
+
+  /**
+    * Returns a stream of package upload entries
+    *
+    * @param startInclusive starting offset inclusive
+    * @param endExclusive   ending offset exclusive
+    * @return a stream of ledger entries tupled with their offset
+    */
+  override def getPackageUploadEntries(
+      startInclusive: LedgerOffset,
+      endExclusive: LedgerOffset): Source[(LedgerOffset, PackageUploadEntry), NotUsed] =
+    //TODO BH: implement me
+    Source.empty
 }
 
 object MeteredLedgerDao {
