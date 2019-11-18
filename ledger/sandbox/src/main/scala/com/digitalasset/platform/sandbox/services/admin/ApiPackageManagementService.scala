@@ -82,7 +82,7 @@ class ApiPackageManagementService(
             case SubmissionResult.NotSupported =>
               Future.failed(ErrorFactories.unimplemented("not supported"))
             case SubmissionResult.Overloaded =>
-            Future.failed(ErrorFactories.grpcError(io.grpc.Status.RESOURCE_EXHAUSTED))
+              Future.failed(ErrorFactories.grpcError(io.grpc.Status.RESOURCE_EXHAUSTED))
 //            case r @ UploadPackagesResult.InvalidPackage(_) =>
 //              Future.failed(ErrorFactories.invalidArgument(r.description))
 //            case r @ UploadPackagesResult.ParticipantNotAuthorized =>
