@@ -61,6 +61,11 @@ private class MeteredLedgerReadDao(ledgerDao: LedgerReadDao, mm: MetricsManager)
       endExclusive: LedgerOffset): Source[(LedgerOffset, LedgerEntry), NotUsed] =
     ledgerDao.getLedgerEntries(startInclusive, endExclusive)
 
+  override def getPackageUploadEntries(
+      startInclusive: LedgerOffset,
+      endExclusive: LedgerOffset): Source[(LedgerOffset, PackageUploadEntry), NotUsed] =
+    ledgerDao.getPackageUploadEntries(startInclusive, endExclusive)
+
   override def getParties: Future[List[PartyDetails]] =
     mm.timedFuture("getParties", ledgerDao.getParties)
 
@@ -123,33 +128,11 @@ private class MeteredLedgerDao(ledgerDao: LedgerDao, mm: MetricsManager)
     ledgerDao.close()
   }
 
-  /**
-    * Store a package upload entry confirmation or rejection
-    *
-    * @param participantId
-    * @param submissionId
-    * @param reason
-    * @return
-    */
   override def storePackageUploadEntry(
       participantId: ParticipantId,
       submissionId: String,
       reason: Option[String]): Future[PersistenceResponse] =
-    //TODO BH: implement me
-    Future.successful(PersistenceResponse.Duplicate)
-
-  /**
-    * Returns a stream of package upload entries
-    *
-    * @param startInclusive starting offset inclusive
-    * @param endExclusive   ending offset exclusive
-    * @return a stream of ledger entries tupled with their offset
-    */
-  override def getPackageUploadEntries(
-      startInclusive: LedgerOffset,
-      endExclusive: LedgerOffset): Source[(LedgerOffset, PackageUploadEntry), NotUsed] =
-    //TODO BH: implement me
-    Source.empty
+    ledgerDao.storePackageUploadEntry(participantId, submissionId, reason)
 }
 
 object MeteredLedgerDao {
