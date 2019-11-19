@@ -33,3 +33,8 @@ HEAD — ongoing
 - [JSON API - Experimental] CLI configuration to enable serving static content as part of the JSON API daemon:
   ``--static-content "directory=/full/path,prefix=static"``
   This configuration is NOT recommended for production deployment. See issue #2782.
+
+- [Sandbox] Add CLI options to start the sandbox with JWT based authentication with RSA signed tokens.
+  See `issue #3155 <https://github.com/digital-asset/daml/issues/3155>`__ .
+
+- [Navigator] Fixed a bug where the `--access-token-file` option did not work correctly.
